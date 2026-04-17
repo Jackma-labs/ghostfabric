@@ -1,0 +1,15 @@
+[
+  {
+    "name": "code_architecture",
+    "payload": {
+      "model": "qwen2.5-32b-deepconf",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Explain the architecture of the target module using only retrieved evidence."
+        }
+      ],
+      "max_tokens": 320
+    }
+  }
+]
