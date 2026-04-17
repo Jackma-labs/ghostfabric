@@ -16,6 +16,10 @@
   <a href="SECURITY.md"><img alt="Security" src="https://img.shields.io/badge/security-reviewed%20before%20publish-6b4f2a.svg"></a>
 </p>
 
+<p align="center">
+  <a href="README.zh-CN.md">中文</a> · <a href="README.md">English</a>
+</p>
+
 ---
 
 ## Positioning
@@ -113,7 +117,7 @@ This makes it especially useful for codebase experts, operations assistants, and
 | Agent runtime | Execute bounded actions | external `tool_calls` or constrained internal tools |
 
 For a deeper view, read [docs/architecture.md](docs/architecture.md).
-For a sharper project statement, read [Vision](docs/vision.md) and [Benchmark Framing](docs/benchmark.md).
+For a sharper project statement, read [Vision](docs/vision.md), [Benchmark Framing](docs/benchmark.md), and [Ascend 910 Case Study](docs/case-study-ascend910.md).
 
 ---
 
