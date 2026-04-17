@@ -1,0 +1,32 @@
+<svg width="960" height="240" viewBox="0 0 960 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="240" rx="28" fill="#0A0F16"/>
+  <rect x="24" y="24" width="912" height="192" rx="20" fill="url(#bg)"/>
+  <path d="M104 74H170V92H122V111H164V129H122V166H104V74Z" fill="#E6EDF7"/>
+  <path d="M187 74H205V166H187V74Z" fill="#E6EDF7"/>
+  <path d="M224 74H247L288 140V74H306V166H285L242 98V166H224V74Z" fill="#E6EDF7"/>
+  <path d="M350 72C378 72 397 87 401 111H383C379 98 368 89 350 89C327 89 313 105 313 120C313 137 327 151 349 151C367 151 381 141 384 126H351V109H403V118C403 147 381 168 348 168C316 168 294 147 294 120C294 93 316 72 350 72Z" fill="#E6EDF7"/>
+  <path d="M453 74H521V92H471V110H517V128H471V148H523V166H453V74Z" fill="#E6EDF7"/>
+  <path d="M542 74H579C608 74 625 88 625 112C625 128 617 140 603 146L628 166H601L580 149H560V166H542V74ZM577 132C594 132 606 126 606 113C606 100 595 92 578 92H560V132H577Z" fill="#E6EDF7"/>
+  <path d="M646 74H664V166H646V74Z" fill="#E6EDF7"/>
+  <path d="M683 74H749V92H701V111H743V129H701V166H683V74Z" fill="#E6EDF7"/>
+  <path d="M799 72C831 72 853 93 853 120C853 147 831 168 799 168C767 168 744 147 744 120C744 93 767 72 799 72ZM799 151C820 151 834 137 834 120C834 103 820 89 799 89C778 89 763 103 763 120C763 137 778 151 799 151Z" fill="#E6EDF7"/>
+  <path d="M110 190H850" stroke="url(#line)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M96 190H110" stroke="#53C8B8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M850 190H864" stroke="#53C8B8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M71 62L118 34L165 62V118L118 146L71 118V62Z" fill="#0C131D" stroke="#53C8B8" stroke-width="4"/>
+  <path d="M96 74L118 61L140 74V105L118 118L96 105V74Z" fill="#53C8B8" fill-opacity="0.12" stroke="#88F7EB" stroke-width="3"/>
+  <path d="M118 61V118" stroke="#88F7EB" stroke-width="3"/>
+  <path d="M96 74L140 105" stroke="#88F7EB" stroke-width="3"/>
+  <path d="M140 74L96 105" stroke="#88F7EB" stroke-width="3"/>
+  <defs>
+    <linearGradient id="bg" x1="24" y1="24" x2="936" y2="216" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101724"/>
+      <stop offset="1" stop-color="#0D1420"/>
+    </linearGradient>
+    <linearGradient id="line" x1="110" y1="190" x2="850" y2="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#274259"/>
+      <stop offset="0.5" stop-color="#4B7AA4"/>
+      <stop offset="1" stop-color="#274259"/>
+    </linearGradient>
+  </defs>
+</svg>

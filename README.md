@@ -1,6 +1,10 @@
 # GhostFabric
 
 <p align="center">
+  <img src="assets/ghostfabric-wordmark.svg" alt="GhostFabric wordmark" width="860" />
+</p>
+
+<p align="center">
   <strong>Awaken dormant datacenter compute.</strong><br />
   Confidence-aware decoding, RAG grounding, and constrained agent execution for domain-specific expert systems.
 </p>
@@ -108,7 +112,8 @@ This makes it especially useful for codebase experts, operations assistants, and
 | RAG layer | Surface relevant evidence | code, docs, configs, logs, runbooks |
 | Agent runtime | Execute bounded actions | external `tool_calls` or constrained internal tools |
 
-For a deeper view, read [docs/architecture.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/architecture.md).
+For a deeper view, read [docs/architecture.md](docs/architecture.md).
+For a sharper project statement, read [Vision](docs/vision.md) and [Benchmark Framing](docs/benchmark.md).
 
 ---
 
@@ -116,14 +121,16 @@ For a deeper view, read [docs/architecture.md](C:/Users/lucky/Documents/New%20pr
 
 | File | Purpose |
 | --- | --- |
-| [src/deepconf_proxy.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/src/deepconf_proxy.py) | public DeepConf-style proxy reference |
-| [docs/architecture.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/architecture.md) | system design and production boundaries |
-| [docs/safety.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/safety.md) | safety rollout model and allowlist principles |
-| [docs/expert-mode-training.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/expert-mode-training.md) | how to build and evaluate expert mode |
-| [SECURITY.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/SECURITY.md) | publishing and runtime security checklist |
-| [scripts/build_domain_assets.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/build_domain_assets.py) | example asset builder for domain corpora |
-| [scripts/expert_mode_pressure_test.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/expert_mode_pressure_test.py) | simple evaluation and latency harness |
-| [scripts/secret_scan.ps1](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/secret_scan.ps1) | pre-publish secret scan |
+| [src/deepconf_proxy.py](src/deepconf_proxy.py) | public DeepConf-style proxy reference |
+| [docs/architecture.md](docs/architecture.md) | system design and production boundaries |
+| [docs/safety.md](docs/safety.md) | safety rollout model and allowlist principles |
+| [docs/expert-mode-training.md](docs/expert-mode-training.md) | how to build and evaluate expert mode |
+| [docs/vision.md](docs/vision.md) | project thesis and positioning |
+| [docs/benchmark.md](docs/benchmark.md) | what to measure and how to frame results |
+| [SECURITY.md](SECURITY.md) | publishing and runtime security checklist |
+| [scripts/build_domain_assets.py](scripts/build_domain_assets.py) | example asset builder for domain corpora |
+| [scripts/expert_mode_pressure_test.py](scripts/expert_mode_pressure_test.py) | simple evaluation and latency harness |
+| [scripts/secret_scan.ps1](scripts/secret_scan.ps1) | pre-publish secret scan |
 
 ---
 
@@ -157,7 +164,7 @@ The public reference implementation uses:
 - auditable write-oriented design
 - a recommendation for human approval on high-risk actions
 
-Read [docs/safety.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/safety.md) and [SECURITY.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/SECURITY.md) before using this in production.
+Read [docs/safety.md](docs/safety.md) and [SECURITY.md](SECURITY.md) before using this in production.
 
 ---
 
@@ -195,7 +202,7 @@ The recommended order is:
 4. improve retrieval before fine-tuning
 5. add constrained tools after honest scoring
 
-The full method is in [docs/expert-mode-training.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/expert-mode-training.md).
+The full method is in [docs/expert-mode-training.md](docs/expert-mode-training.md).
 
 ---
 
