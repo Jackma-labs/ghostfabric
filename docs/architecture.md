@@ -1,8 +1,8 @@
-# Architecture
+# GhostFabric Architecture
 
 ## Overview
 
-The system is split into four layers:
+The GhostFabric system is split into four layers:
 
 1. `Serving backend`
    Example: MindIE, vLLM, or another OpenAI-compatible inference backend hosting `Qwen2.5`.

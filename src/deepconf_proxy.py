@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sanitized public reference implementation of a DeepConf-style proxy.
+Sanitized public reference implementation of the GhostFabric DeepConf proxy.
 """
 
 from __future__ import annotations
@@ -57,7 +57,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("deepconf-public")
 
-app = FastAPI(title="DeepConf Expert Agent", version="0.1.0")
+app = FastAPI(title="GhostFabric", version="0.1.1")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 

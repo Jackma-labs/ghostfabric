@@ -1,6 +1,10 @@
-# DeepConf Expert Agent
+# GhostFabric
 
-DeepConf Expert Agent is a public reference implementation for building a codebase-specific expert on top of a base model such as `Qwen2.5-32B`.
+> Awaken dormant datacenter compute.
+
+GhostFabric is a public reference implementation for building a codebase-specific expert on top of a base model such as `Qwen2.5-32B`.
+
+The technical focus of this repository is a `DeepConf Expert Agent`: confidence-aware decoding, RAG grounding, and constrained execution for domain-specific expert systems.
 
 It combines four ideas:
 
@@ -9,7 +13,7 @@ It combines four ideas:
 - `OpenAI-compatible tool-calling` for external agent shells
 - `Constrained server-side agent execution` for safe file/code/config actions
 
-This repository is meant to help teams build a practical domain expert, not a generic autonomous super-agent.
+This repository is meant to help teams revive dormant datacenter compute and build a practical domain expert, not a generic autonomous super-agent.
 
 ## Why DeepConf Helps
 
@@ -168,6 +172,16 @@ This is not:
 The intended open-source position is:
 
 > A practical recipe for building a domain expert agent on top of Qwen2.5 with confidence-aware decoding, RAG grounding, and constrained execution.
+
+## Brand Direction
+
+`GhostFabric` is the project brand.
+
+The name reflects the actual target:
+
+- dormant datacenter compute
+- older accelerator fleets such as legacy `Ascend 910` deployments
+- system and inference optimization that turns underused infrastructure into useful production capacity
 
 ## Pre-Publish Checklist
 

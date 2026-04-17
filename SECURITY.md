@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is a public reference implementation. Treat all execution features as examples that must be reviewed and narrowed for a real deployment.
+This repository is a public reference implementation for `GhostFabric`. Treat all execution features as examples that must be reviewed and narrowed for a real deployment.
 
 ## Default Safety Model
 
