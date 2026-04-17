@@ -1,10 +1,6 @@
 # GhostFabric
 
 <p align="center">
-  <img src="assets/ghostfabric-wordmark.svg" alt="GhostFabric wordmark" width="860" />
-</p>
-
-<p align="center">
   <strong>Awaken dormant datacenter compute.</strong><br />
   Confidence-aware decoding, RAG grounding, and constrained agent execution for domain-specific expert systems.
 </p>

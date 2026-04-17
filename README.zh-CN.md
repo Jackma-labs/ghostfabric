@@ -1,10 +1,6 @@
 # GhostFabric
 
 <p align="center">
-  <img src="assets/ghostfabric-wordmark.svg" alt="GhostFabric wordmark" width="860" />
-</p>
-
-<p align="center">
   <strong>唤醒沉睡的数据中心算力。</strong><br />
   面向领域专家系统的置信度感知解码、RAG 检索增强与受限 Agent 执行框架。
 </p>
