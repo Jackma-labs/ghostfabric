@@ -1,196 +1,241 @@
 # GhostFabric
 
-> Awaken dormant datacenter compute.
+<p align="center">
+  <strong>Awaken dormant datacenter compute.</strong><br />
+  Confidence-aware decoding, RAG grounding, and constrained agent execution for domain-specific expert systems.
+</p>
 
-GhostFabric is a public reference implementation for building a codebase-specific expert on top of a base model such as `Qwen2.5-32B`.
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-111111.svg"></a>
+  <a href="docs/safety.md"><img alt="Safety" src="https://img.shields.io/badge/safety-allowlist%20first-2f5d50.svg"></a>
+  <a href="docs/expert-mode-training.md"><img alt="Training" src="https://img.shields.io/badge/expert%20mode-training%20guide-304b72.svg"></a>
+  <a href="SECURITY.md"><img alt="Security" src="https://img.shields.io/badge/security-reviewed%20before%20publish-6b4f2a.svg"></a>
+</p>
 
-The technical focus of this repository is a `DeepConf Expert Agent`: confidence-aware decoding, RAG grounding, and constrained execution for domain-specific expert systems.
+---
 
-It combines four ideas:
+## Positioning
 
-- `DeepConf-style decoding` to improve answer stability by sampling multiple reasoning paths and selecting higher-confidence results
-- `RAG grounding` for internal code, docs, and operational notes
-- `OpenAI-compatible tool-calling` for external agent shells
-- `Constrained server-side agent execution` for safe file/code/config actions
+GhostFabric is a public reference implementation for teams who want to turn underused infrastructure into practical expert systems.
 
-This repository is meant to help teams revive dormant datacenter compute and build a practical domain expert, not a generic autonomous super-agent.
+The target is not hobby hardware. The target is dormant datacenter compute: older accelerator fleets, legacy inference clusters, and environments where raw hardware still exists but software efficiency is lagging.
 
-## Why DeepConf Helps
+The technical core of GhostFabric is a `DeepConf Expert Agent` built around four layers:
 
-Base models often fail in two ways:
+- `confidence-aware decoding` to improve answer stability over one-shot generation
+- `RAG grounding` for code, docs, configs, logs, and operational notes
+- `OpenAI-compatible tool calling` for external agent clients
+- `constrained server-side execution` for safe reads, search, edits, and bounded command execution
 
-- they commit too early to a weak answer
-- they answer with high confidence when evidence is incomplete
+This repository is designed to help teams build a useful domain expert on top of models such as `Qwen2.5`, especially in environments where better inference orchestration can extract more value from existing compute.
 
-DeepConf improves this by generating multiple candidate traces, scoring them with token-level confidence, and selecting a stronger final answer instead of trusting a single pass.
+---
 
-In plain terms:
+## Why This Exists
 
-- a one-shot answer is one guess
-- DeepConf is a small search procedure over multiple guesses
-- confidence-aware selection makes it easier to keep the stronger trace and discard weaker drafts
+Many organizations already have significant compute inventory, but a lot of it is underused because:
 
-This is useful for `Qwen2.5` because the model is often capable enough to produce a correct answer, but not always stable enough to choose that answer on the first try.
+- model serving is unstable or poorly optimized
+- retrieval is weak, so the model cannot behave like a real expert
+- agent runtimes are unsafe or too brittle to trust
+- legacy accelerator environments are treated as dead weight instead of optimization targets
 
-In practice this helps most on:
+GhostFabric takes the opposite view: older infrastructure can still be valuable if the serving path, retrieval stack, and execution policy are engineered carefully.
 
-- code explanation
+For legacy datacenter environments such as older `Ascend 910` deployments, the most practical wins often come from:
+
+- better decoding policy
+- better retrieval and evaluation
+- better compatibility layers
+- better operational guardrails
+
+not just from buying new hardware.
+
+---
+
+## Why DeepConf Improves Qwen2.5
+
+`Qwen2.5` is often strong enough to solve the task, but not always stable enough to choose the strongest answer on the first pass.
+
+DeepConf helps by replacing one-shot trust with a lightweight search procedure:
+
+1. generate multiple candidate traces
+2. collect token-level confidence from logprobs
+3. score candidate traces
+4. stop early when one answer is clearly stronger
+5. return the higher-confidence result
+
+In practice, this improves:
+
 - technical Q&A
 - multi-step reasoning
-- cases where weak drafts should be filtered out
+- code explanation
+- cases where one weak draft should not dominate the answer
 
-It does **not** magically solve missing evidence. That is where RAG and evaluation still matter.
-
-## Why DeepConf Is Useful For Expert Mode
-
-Expert mode usually fails for one of three reasons:
-
-1. wrong retrieval
-2. weak answer policy
-3. overconfident final generation
-
-DeepConf is most helpful on the third part. Once retrieval brings back relevant evidence, confidence-aware aggregation makes it easier to:
-
-- prefer better grounded answers
-- reduce noisy one-shot failures
-- keep weak traces from dominating the final response
-
-That is why this project treats expert mode as:
+It does **not** create missing evidence. If retrieval is weak, DeepConf will still be choosing among weak candidates. That is why this repository treats expert mode as a full stack problem:
 
 `retrieval quality + answer policy + confidence-aware decoding + strict evaluation`
 
-DeepConf does not replace RAG. It helps most after retrieval has already surfaced relevant evidence.
+---
 
-The practical split is:
+## Why DeepConf Is Useful For Expert Mode
 
-- `RAG` decides whether the model can see the right evidence
-- `answer policy` decides whether weak evidence should trigger a conservative answer
-- `DeepConf` improves the chance that the final answer is the stronger grounded one
+Expert mode usually fails in one of three places:
 
-## What Is Included
+1. the wrong evidence was retrieved
+2. the answer policy was too loose
+3. the final generation committed to a weak trace
 
-- `src/deepconf_proxy.py`
-- `docs/architecture.md`
-- `docs/safety.md`
-- `SECURITY.md`
-- `docs/expert-mode-training.md`
-- `scripts/build_domain_assets.py`
-- `scripts/expert_mode_pressure_test.py`
-- `scripts/secret_scan.ps1`
+DeepConf is most useful on the third part.
+
+Once relevant evidence is present, confidence-aware aggregation makes it easier to:
+
+- prefer better grounded answers
+- filter weak one-shot drafts
+- reduce noisy final outputs
+- keep conservative behavior when evidence is thin
+
+This makes it especially useful for codebase experts, operations assistants, and domain Q&A systems that need to be helpful without becoming reckless.
+
+---
+
+## System View
+
+| Layer | Purpose | Example |
+| --- | --- | --- |
+| Serving backend | Host the base model | MindIE, vLLM, OpenAI-compatible backend |
+| DeepConf proxy | Confidence-aware decoding and routing | `src/deepconf_proxy.py` |
+| RAG layer | Surface relevant evidence | code, docs, configs, logs, runbooks |
+| Agent runtime | Execute bounded actions | external `tool_calls` or constrained internal tools |
+
+For a deeper view, read [docs/architecture.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/architecture.md).
+
+---
+
+## What You Get In This Repository
+
+| File | Purpose |
+| --- | --- |
+| [src/deepconf_proxy.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/src/deepconf_proxy.py) | public DeepConf-style proxy reference |
+| [docs/architecture.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/architecture.md) | system design and production boundaries |
+| [docs/safety.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/safety.md) | safety rollout model and allowlist principles |
+| [docs/expert-mode-training.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/expert-mode-training.md) | how to build and evaluate expert mode |
+| [SECURITY.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/SECURITY.md) | publishing and runtime security checklist |
+| [scripts/build_domain_assets.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/build_domain_assets.py) | example asset builder for domain corpora |
+| [scripts/expert_mode_pressure_test.py](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/expert_mode_pressure_test.py) | simple evaluation and latency harness |
+| [scripts/secret_scan.ps1](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/scripts/secret_scan.ps1) | pre-publish secret scan |
+
+---
 
 ## Deployment Modes
 
-### 1. Reasoning proxy
+### 1. Reasoning Proxy
 
-Use `qwen2.5-32b-deepconf` style decoding to improve accuracy over a plain one-shot backend.
+Use `qwen2.5-32b-deepconf` style decoding to improve answer quality over plain one-shot generation.
 
-### 2. External agent provider
+### 2. External Agent Provider
 
-Use a tool-calling model endpoint that returns standard OpenAI `tool_calls` for clients such as WorkBuddy, Hermes, or OpenClaw.
+Expose standard OpenAI `tool_calls` to clients such as WorkBuddy, Hermes, or OpenClaw.
 
-### 3. Server-side expert agent
+### 3. Server-Side Expert Agent
 
-Use a constrained server-side tool runtime when you want the backend to perform safe reads, code search, and limited command execution.
+Execute bounded internal tools when you want the backend to perform safe reads, code search, limited edits, and allowlisted commands.
+
+---
 
 ## Safety Model
 
 This repository intentionally does **not** expose unrestricted shell access.
 
-The reference implementation uses:
+The public reference implementation uses:
 
 - explicit allowed roots
 - explicit allowed commands
-- capped tool steps
-- auditable write operations
+- path validation
+- rejection of shell chaining characters in the sample command runner
+- capped execution patterns
+- auditable write-oriented design
 - a recommendation for human approval on high-risk actions
 
-Read `docs/safety.md` before using this in production.
+Read [docs/safety.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/safety.md) and [SECURITY.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/SECURITY.md) before using this in production.
 
-The public proxy also includes:
-
-- message sanitization for OpenAI-compatible inputs
-- path allowlist validation
-- command allowlist validation
-- rejection of dangerous shell metacharacters in the reference command runner
-- a pre-publish secret scan script
+---
 
 ## Quick Start
 
-1. Copy `examples/.env.example` to `.env`.
-2. Replace placeholder values.
-3. Install dependencies:
+1. Copy `examples/.env.example` to `.env`
+2. Replace placeholders
+3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Run the proxy:
+4. Run the proxy
 
 ```bash
 uvicorn src.deepconf_proxy:app --host 0.0.0.0 --port 7200
 ```
 
-5. Check:
+5. Verify the endpoints
 
 - `GET /health`
 - `GET /v1/models`
 - `POST /v1/chat/completions`
 
-## Expert Training Workflow
+---
 
-The recommended workflow is:
+## Expert Mode Training Workflow
 
-1. Build a domain corpus.
-2. Convert docs and troubleshooting notes into structured assets.
-3. Build an evaluation set and an agent task set.
-4. Improve retrieval before considering fine-tuning.
-5. Add constrained tools only after scoring answer quality honestly.
+The recommended order is:
 
-The full method is documented in `docs/expert-mode-training.md`.
+1. build a domain corpus
+2. convert docs and troubleshooting notes into structured assets
+3. build a strict evaluation set and an agent task set
+4. improve retrieval before fine-tuning
+5. add constrained tools after honest scoring
 
-## Security Before Open Source
+The full method is in [docs/expert-mode-training.md](C:/Users/lucky/Documents/New%20project/deepconf-expert-agent/docs/expert-mode-training.md).
 
-Do not publish:
+---
 
-- real API keys
-- real IP addresses or SSH targets
-- private corpus files
-- internal usernames
-- production config snapshots
-- service logs with secrets or tokens
+## Suitable Use Cases
 
-Use `scripts/secret_scan.ps1` as a last-pass guard, then still perform manual review.
+- single-repository expert systems
+- internal code and configuration assistants
+- infrastructure troubleshooting copilots
+- legacy accelerator deployment support
+- datacenter inference efficiency projects
 
-## What This Repository Is Not
+## Not The Goal
 
-This is not:
+This repository is not:
 
 - a claim that DeepConf alone makes any model an expert
-- a fully autonomous production operator
-- a replacement for retrieval quality, task design, and safety engineering
+- an unrestricted autonomous production operator
+- a replacement for retrieval quality, evaluation, and safety engineering
 
-The intended open-source position is:
-
-> A practical recipe for building a domain expert agent on top of Qwen2.5 with confidence-aware decoding, RAG grounding, and constrained execution.
+---
 
 ## Brand Direction
 
-`GhostFabric` is the project brand.
+`GhostFabric` reflects the actual operating thesis:
 
-The name reflects the actual target:
+- dormant datacenter compute can be reactivated
+- older accelerator fleets can still be useful
+- serving, retrieval, and agent engineering can unlock production value without pretending old infrastructure is worthless
 
-- dormant datacenter compute
-- older accelerator fleets such as legacy `Ascend 910` deployments
-- system and inference optimization that turns underused infrastructure into useful production capacity
+---
 
-## Pre-Publish Checklist
+## Before You Publish A Fork
 
-Before pushing:
+1. run `scripts/secret_scan.ps1`
+2. remove real keys, hosts, usernames, and internal paths
+3. remove private corpora and customer data
+4. manually inspect the staged diff
+5. review `.env.example`, screenshots, samples, and copied logs
 
-1. Run `scripts/secret_scan.ps1`
-2. Remove any real API keys, hosts, SSH material, usernames, or internal paths
-3. Replace private corpora with redacted or synthetic examples
-4. Review `.env.example` and docs for placeholders
+---
 
 ## License
 
